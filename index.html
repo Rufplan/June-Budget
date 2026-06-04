@@ -198,10 +198,35 @@
   .modal-close { width: 100%; margin-top: 20px; padding: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.16); border-radius: 10px; color: var(--white); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: background .15s; }
   .modal-close:hover { background: rgba(255,255,255,0.06); }
 
+  /* Collections */
+  .collections { margin-top: 44px; }
+  .collections h2 { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 1px; margin-bottom: 6px; }
+  .coll-sub { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--gray); letter-spacing: 1px; margin-bottom: 18px; }
+  .coll-sub b { color: var(--mint); }
+  .coll-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .coll-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .coll-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .coll-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: .5px; }
+  .coll-count { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .5px; color: var(--mint); }
+  .coll-bar { height: 8px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; margin-bottom: 16px; }
+  .coll-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--mint), var(--gold)); }
+  .coll-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .coll-row:last-child { border-bottom: none; }
+  .coll-acct { display: flex; align-items: center; gap: 9px; }
+  .coll-acct .ck { width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+  .ck.done { background: var(--mint); color: #06231d; font-weight: 700; }
+  .ck.pend { background: transparent; border: 1px solid rgba(255,255,255,0.22); color: var(--gray); }
+  .coll-acct.is-pending .lbl { color: var(--gray); }
+  .coll-status { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; }
+  .coll-status.paid { color: var(--mint); }
+  .coll-status.sched { color: var(--gold); }
+  .coll-status.pending { color: var(--gray); }
+
   @media (max-width: 820px) {
     .flow-row { grid-template-columns: repeat(2, 1fr); }
     .weeks { grid-template-columns: repeat(2, 1fr); }
     .bd-grid { grid-template-columns: 1fr; }
+    .coll-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     .container { padding: 40px 14px 70px; }
@@ -298,6 +323,28 @@
         <div class="bd-row"><div><span class="label">Parking</span><span class="meta">$25 × 9 (Tue & Thu)</span></div><span class="amt lavender">$225</span></div>
         <div class="bd-row"><div><span class="label">Lunch</span><span class="meta">$6.50 × 22 weekdays</span></div><span class="amt peach">$143</span></div>
         <div class="subtotal"><span class="label">Spend Total</span><span class="amt">$1,568</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collections">
+    <h2>Collections Progress</h2>
+    <div class="coll-sub"><b>5 of 7</b> tackled this month · <b>2</b> still pending</div>
+    <div class="coll-grid">
+      <div class="coll-card">
+        <div class="coll-head"><span class="coll-name">Rufus</span><span class="coll-count">3 of 4 tackled · 1 left</span></div>
+        <div class="coll-bar"><div class="coll-fill" style="width:75%"></div></div>
+        <div class="coll-row"><div class="coll-acct"><span class="ck done">✓</span><span class="lbl">LVNV</span></div><span class="coll-status paid">Paid · Jun 5</span></div>
+        <div class="coll-row"><div class="coll-acct"><span class="ck done">✓</span><span class="lbl">Comcast</span></div><span class="coll-status paid">Paid · Jun 5</span></div>
+        <div class="coll-row"><div class="coll-acct"><span class="ck done">✓</span><span class="lbl">National Credit Adjusters</span></div><span class="coll-status paid">Paid · Jun 5</span></div>
+        <div class="coll-row"><div class="coll-acct is-pending"><span class="ck pend">○</span><span class="lbl">Credit Ninja</span></div><span class="coll-status pending">Pending</span></div>
+      </div>
+      <div class="coll-card">
+        <div class="coll-head"><span class="coll-name">Martha</span><span class="coll-count">2 of 3 tackled · 1 left</span></div>
+        <div class="coll-bar"><div class="coll-fill" style="width:66.6%"></div></div>
+        <div class="coll-row"><div class="coll-acct"><span class="ck done">✓</span><span class="lbl">Wells Fargo</span></div><span class="coll-status paid">Paid · Jun 6</span></div>
+        <div class="coll-row"><div class="coll-acct"><span class="ck done">✓</span><span class="lbl">Capital One</span></div><span class="coll-status sched">Scheduled · Jun 22</span></div>
+        <div class="coll-row"><div class="coll-acct is-pending"><span class="ck pend">○</span><span class="lbl">Redwood Credit Union</span></div><span class="coll-status pending">Pending</span></div>
       </div>
     </div>
   </div>
