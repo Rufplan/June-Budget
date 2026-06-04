@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kerr Family — June 2026 Cash Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card-bg: #111118;
+    --card-bg2: #15151e;
+    --rose: #ff6b9d;
+    --rose-dim: rgba(255, 107, 157, 0.12);
+    --gold: #ffc233;
+    --gold-dim: rgba(255, 194, 51, 0.12);
+    --lavender: #c4a8ff;
+    --lavender-dim: rgba(196, 168, 255, 0.12);
+    --mint: #5fe6c8;
+    --mint-dim: rgba(95, 230, 200, 0.12);
+    --peach: #ffad7a;
+    --peach-dim: rgba(255, 173, 122, 0.12);
+    --white: #f0f0f5;
+    --gray: #6b6b80;
+    --line: rgba(255,255,255,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #000000 !important; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(900px 500px at 12% -5%, rgba(255,107,157,0.10), transparent 60%),
+      radial-gradient(800px 500px at 95% 8%, rgba(95,230,200,0.08), transparent 60%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 56px 28px 100px; position: relative; z-index: 1; }
+
+  /* Header */
+  .header { margin-bottom: 36px; }
+  .logo-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--rose);
+    border: 1px solid var(--rose-dim);
+    background: var(--rose-dim);
+    padding: 6px 14px; border-radius: 100px; margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 9vw, 104px);
+    line-height: 0.92; letter-spacing: 1px;
+  }
+  h1 span { color: var(--gold); }
+  .subtitle {
+    font-family: 'Space Mono', monospace;
+    color: var(--gray); font-size: 13px; letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  /* Cash-flow summary */
+  .flow-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin: 34px 0 16px;
+  }
+  .flow-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 18px;
+    position: relative; overflow: hidden;
+  }
+  .flow-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+  .flow-card.start::after  { background: var(--lavender); }
+  .flow-card.income::after { background: var(--mint); }
+  .flow-card.out::after    { background: var(--rose); }
+  .flow-card.end::after    { background: linear-gradient(90deg, var(--gold), var(--peach)); }
+  .flow-label {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray);
+    margin-bottom: 10px;
+  }
+  .flow-value { font-family: 'Bebas Neue', sans-serif; font-size: 40px; line-height: 1; }
+  .flow-card.start .flow-value  { color: var(--lavender); }
+  .flow-card.income .flow-value { color: var(--mint); }
+  .flow-card.out .flow-value    { color: var(--rose); }
+  .flow-card.end .flow-value    { color: var(--gold); }
+  .flow-sub { font-size: 11px; color: var(--gray); margin-top: 6px; }
+
+  /* Sparkline */
+  .spark-wrap { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 12px; margin-bottom: 40px; }
+  .spark-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .spark-title { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); }
+  .spark-low { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--rose); }
+  svg.spark { width: 100%; height: 90px; display: block; }
+
+  /* Legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 22px; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--gray); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dot.groceries { background: var(--mint); }
+  .dot.parking { background: var(--lavender); }
+  .dot.lunch { background: var(--peach); }
+  .dot.bill { background: var(--gold); }
+  .dot.income { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.6); }
+
+  /* Calendar */
+  .cal-wrap { background: var(--card-bg); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 10px; }
+  .weekday { text-align: center; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); padding-bottom: 4px; }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .day {
+    aspect-ratio: 1 / 1.12;
+    background: var(--card-bg2);
+    border: 1px solid var(--line);
+    border-radius: 12px; padding: 9px 9px 8px;
+    display: flex; flex-direction: column;
+    position: relative; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .day.empty { background: transparent; border: 1px dashed rgba(255,255,255,0.04); }
+  .day.active { cursor: pointer; }
+  .day.active:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.18); box-shadow: 0 10px 28px rgba(0,0,0,0.5); }
+  .day.income-day { border-color: rgba(52,211,153,0.4); background: linear-gradient(160deg, rgba(52,211,153,0.10), var(--card-bg2)); }
+  .day-num { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--gray); }
+  .day.weekend .day-num { color: var(--rose); }
+  .tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+  .tag { width: 7px; height: 7px; border-radius: 50%; }
+  .tag.groceries { background: var(--mint); }
+  .tag.parking { background: var(--lavender); }
+  .tag.lunch { background: var(--peach); }
+  .tag.bill { background: var(--gold); }
+  .tag.income { background: #34d399; }
+  .bill-flag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .4px; color: var(--gold); margin-top: 4px; text-transform: uppercase; line-height: 1.25; }
+  .bill-flag.income { color: #34d399; }
+  .day-amt { font-family: 'Bebas Neue', sans-serif; font-size: 23px; line-height: 1; margin-top: auto; color: var(--white); }
+  .day.zero .day-amt { color: rgba(255,255,255,0.18); }
+  .day.big .day-amt { color: var(--gold); }
+  .day.income-day .day-amt { color: #34d399; }
+  .day-bal { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--gray); margin-top: 3px; letter-spacing: .3px; }
+
+  /* Weekly net strip */
+  .weeks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 30px; }
+  .week-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; text-align: center; }
+  .week-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+  .week-val { font-family: 'Bebas Neue', sans-serif; font-size: 24px; }
+  .week-val.neg { color: var(--rose); }
+  .week-val.pos { color: var(--mint); }
+
+  /* Breakdown */
+  .breakdown { margin-top: 44px; }
+  .breakdown h2 { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 1px; margin-bottom: 18px; }
+  .bd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .bd-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .bd-card h3 { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 14px; }
+  .bd-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .bd-row:last-child { border-bottom: none; }
+  .bd-row .label { color: var(--white); }
+  .bd-row .meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gray); display: block; margin-top: 2px; }
+  .bd-row .amt { font-family: 'Bebas Neue', sans-serif; font-size: 22px; }
+  .amt.mint { color: var(--mint); } .amt.lavender { color: var(--lavender); }
+  .amt.peach { color: var(--peach); } .amt.gold { color: var(--gold); }
+  .bd-card .subtotal { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .bd-card .subtotal .label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); }
+  .bd-card .subtotal .amt { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--white); }
+
+  /* Note */
+  .note { margin-top: 30px; background: var(--gold-dim); border: 1px solid rgba(255,194,51,0.25); border-radius: 14px; padding: 16px 18px; font-size: 13px; color: #e8d9a8; line-height: 1.6; }
+  .note strong { color: var(--gold); }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 56px; padding-top: 38px; border-top: 1px solid var(--line); }
+  .footer p { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; }
+  .footer .big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 80px); margin-top: 8px; background: linear-gradient(135deg, var(--gold), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 26px; max-width: 380px; width: 100%; animation: pop .2s ease; }
+  @keyframes pop { from { transform: scale(.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-date { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+  .modal-total { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1; margin: 6px 0 4px; }
+  .modal-total.out { color: var(--rose); } .modal-total.in { color: var(--mint); } .modal-total.flat { color: var(--white); }
+  .modal-balline { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray); margin-bottom: 16px; }
+  .modal-balline b { color: var(--gold); }
+  .modal-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .modal-row:last-child { border-bottom: none; }
+  .modal-row .ml { display: flex; align-items: center; gap: 9px; font-size: 14px; }
+  .modal-row .ma { font-family: 'Bebas Neue', sans-serif; font-size: 20px; }
+  .modal-close { width: 100%; margin-top: 20px; padding: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.16); border-radius: 10px; color: var(--white); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+  .modal-close:hover { background: rgba(255,255,255,0.06); }
+
+  @media (max-width: 820px) {
+    .flow-row { grid-template-columns: repeat(2, 1fr); }
+    .weeks { grid-template-columns: repeat(2, 1fr); }
+    .bd-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .container { padding: 40px 14px 70px; }
+    .day { padding: 6px; border-radius: 9px; aspect-ratio: 1 / 1.25; }
+    .day-amt { font-size: 15px; }
+    .day-num { font-size: 10px; }
+    .day-bal { font-size: 8px; }
+    .bill-flag { display: none; }
+    .tags { margin-top: 4px; }
+    .weekday { font-size: 8px; }
+    .cal-wrap { padding: 12px; }
+    .grid, .weekdays { gap: 5px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo-tag">Kerr Family · Cash Flow</div>
+    <h1>June <span>2026</span></h1>
+    <p class="subtitle">Running balance — starting at $7,400 · payment in on the 17th</p>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-card start">
+      <div class="flow-label">Starting Balance</div>
+      <div class="flow-value">$7,400</div>
+      <div class="flow-sub">June 1</div>
+    </div>
+    <div class="flow-card income">
+      <div class="flow-label">Income In</div>
+      <div class="flow-value">+$2,850</div>
+      <div class="flow-sub">payment · Jun 17</div>
+    </div>
+    <div class="flow-card out">
+      <div class="flow-label">Total Out</div>
+      <div class="flow-value">$8,208</div>
+      <div class="flow-sub">bills + spending</div>
+    </div>
+    <div class="flow-card end">
+      <div class="flow-label">Ending Balance</div>
+      <div class="flow-value">$2,042</div>
+      <div class="flow-sub">June 30</div>
+    </div>
+  </div>
+
+  <div class="spark-wrap">
+    <div class="spark-head">
+      <span class="spark-title">Balance through the month</span>
+      <span class="spark-low">Low point · $1,517 on Jun 16</span>
+    </div>
+    <svg class="spark" id="spark" viewBox="0 0 1000 90" preserveAspectRatio="none"></svg>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="dot income"></span>Payment in · $2,850</div>
+    <div class="legend-item"><span class="dot groceries"></span>Groceries · $300 / Sun</div>
+    <div class="legend-item"><span class="dot parking"></span>Parking · $25 · Tue & Thu</div>
+    <div class="legend-item"><span class="dot lunch"></span>Lunch · $6.50 · Mon–Fri</div>
+    <div class="legend-item"><span class="dot bill"></span>Bill due</div>
+  </div>
+
+  <div class="cal-wrap">
+    <div class="weekdays">
+      <div class="weekday">Sun</div><div class="weekday">Mon</div><div class="weekday">Tue</div>
+      <div class="weekday">Wed</div><div class="weekday">Thu</div><div class="weekday">Fri</div><div class="weekday">Sat</div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="weeks" id="weeks"></div>
+
+  <div class="breakdown">
+    <h2>The Breakdown</h2>
+    <div class="bd-grid">
+      <div class="bd-card">
+        <h3>Dated Bills & Appts</h3>
+        <div class="bd-row"><div><span class="label">Vegas Trip · Rufus</span><span class="meta">Jun 3</span></div><span class="amt gold">$700</span></div>
+        <div class="bd-row"><div><span class="label">Liza Appt · Martha</span><span class="meta">Jun 4</span></div><span class="amt gold">$200</span></div>
+        <div class="bd-row"><div><span class="label">Rufus Collections</span><span class="meta">LVNV · Comcast · NCA — 3 of 4 paid · Jun 5</span></div><span class="amt gold">$1,400</span></div>
+        <div class="bd-row"><div><span class="label">Wells Fargo · Martha</span><span class="meta">Collections — 1 of 3 · Jun 6</span></div><span class="amt gold">$1,700</span></div>
+        <div class="bd-row"><div><span class="label">Cell Phone</span><span class="meta">Due Jun 7</span></div><span class="amt gold">$180</span></div>
+        <div class="bd-row"><div><span class="label">Car Payment</span><span class="meta">Due Jun 8</span></div><span class="amt gold">$900</span></div>
+        <div class="bd-row"><div><span class="label">Vegas Money · Rufus</span><span class="meta">Jun 20</span></div><span class="amt gold">$350</span></div>
+        <div class="bd-row"><div><span class="label">Internet</span><span class="meta">Due Jun 21</span></div><span class="amt gold">$80</span></div>
+        <div class="bd-row"><div><span class="label">Capital One · Martha</span><span class="meta">Collections — 2 of 3 · Jun 22</span></div><span class="amt gold">$750</span></div>
+        <div class="bd-row"><div><span class="label">App Subscriptions</span><span class="meta">Due Jun 26</span></div><span class="amt gold">$200</span></div>
+        <div class="bd-row"><div><span class="label">Car Insurance</span><span class="meta">Due Jun 28</span></div><span class="amt gold">$180</span></div>
+        <div class="subtotal"><span class="label">Dated Total</span><span class="amt">$6,640</span></div>
+      </div>
+      <div class="bd-card">
+        <h3>Recurring Spend</h3>
+        <div class="bd-row"><div><span class="label">Groceries</span><span class="meta">$300 × 4 Sundays</span></div><span class="amt mint">$1,200</span></div>
+        <div class="bd-row"><div><span class="label">Parking</span><span class="meta">$25 × 9 (Tue & Thu)</span></div><span class="amt lavender">$225</span></div>
+        <div class="bd-row"><div><span class="label">Lunch</span><span class="meta">$6.50 × 22 weekdays</span></div><span class="amt peach">$143</span></div>
+        <div class="subtotal"><span class="label">Spend Total</span><span class="amt">$1,568</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Heads up:</strong> Still not included from your past budget — electricity/gas, trash, Martha Poppins insurance &amp; website, and renters insurance. Give me their amounts and due dates and I'll drop them in and re-run the balance.
+  </div>
+
+  <div class="footer">
+    <p>Ending balance · June 30, 2026</p>
+    <div class="big">$2,042</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-date" id="mDate"></div>
+    <div class="modal-total" id="mTotal"></div>
+    <div class="modal-balline" id="mBal"></div>
+    <div id="mRows"></div>
+    <button class="modal-close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  // June 2026: Jun 1 = Monday. 30 days.
+  const COLORS = { groceries:'var(--mint)', parking:'var(--lavender)', lunch:'var(--peach)', bill:'var(--gold)', income:'#34d399' };
+  const LUNCH = 6.50, PARK = 25, GROC = 300;
+  const STARTING = 7400;
+
+  const BILLS = {
+    3:  [{name:'Vegas Trip · Rufus', amt:700}],
+    4:  [{name:'Liza Appt · Martha', amt:200}],
+    5:  [{name:'Rufus Collections', amt:1400}],
+    6:  [{name:'Wells Fargo · Martha', amt:1700}],
+    7:  [{name:'Cell Phone', amt:180}],
+    8:  [{name:'Car Payment', amt:900}],
+    20: [{name:'Vegas Money · Rufus', amt:350}],
+    21: [{name:'Internet', amt:80}],
+    22: [{name:'Capital One · Martha', amt:750}],
+    26: [{name:'App Subscriptions', amt:200}],
+    28: [{name:'Car Insurance', amt:180}],
+  };
+  const INCOME = { 17: {name:'Payment In', amt:2850} };
+
+  function dayOfWeek(day){ return (1 + (day - 1)) % 7; } // Jun 1 = Monday(1); 0=Sun..6=Sat
+
+  const days = [];
+  let bal = STARTING;
+  for (let d = 1; d <= 30; d++){
+    const dow = dayOfWeek(d);
+    const outItems = [];
+    if (dow >= 1 && dow <= 5) outItems.push({type:'lunch', label:'Lunch', amt:LUNCH});
+    if (dow === 2 || dow === 4) outItems.push({type:'parking', label:'Parking', amt:PARK});
+    if (dow === 0) outItems.push({type:'groceries', label:'Groceries', amt:GROC});
+    if (BILLS[d]) BILLS[d].forEach(b => outItems.push({type:'bill', label:b.name, amt:b.amt}));
+    const inItems = INCOME[d] ? [{type:'income', label:INCOME[d].name, amt:INCOME[d].amt}] : [];
+    const out = outItems.reduce((s,i)=>s+i.amt, 0);
+    const incoming = inItems.reduce((s,i)=>s+i.amt, 0);
+    const net = incoming - out;
+    bal += net;
+    days.push({ d, dow, outItems, inItems, out, incoming, net, balance: bal });
+  }
+
+  const fmt = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits: (n % 1 ? 2 : 0), maximumFractionDigits: 2});
+  const fmtShort = n => n >= 100 ? '$' + Math.round(n).toLocaleString('en-US') : (n % 1 ? '$'+n.toFixed(2) : '$'+n);
+
+  /* ---- Calendar grid ---- */
+  const grid = document.getElementById('grid');
+  for (let i = 0; i < 1; i++){ const e = document.createElement('div'); e.className = 'day empty'; grid.appendChild(e); }
+
+  days.forEach(day => {
+    const cell = document.createElement('div');
+    const isWeekend = day.dow === 0 || day.dow === 6;
+    const isIncome = day.incoming > 0;
+    const big = day.out >= 100;
+    let cls = 'day';
+    if (day.net === 0) cls += ' zero'; else cls += ' active';
+    if (isWeekend) cls += ' weekend';
+    if (big && !isIncome) cls += ' big';
+    if (isIncome) cls += ' income-day';
+    cell.className = cls;
+
+    let tagsHtml = '';
+    const seen = new Set();
+    [...day.inItems, ...day.outItems].forEach(it => { if (!seen.has(it.type)){ tagsHtml += `<span class="tag ${it.type}"></span>`; seen.add(it.type); } });
+
+    const billHere = day.outItems.filter(i=>i.type==='bill').map(i=>i.label).join(' · ');
+    const flag = isIncome ? `<div class="bill-flag income">+ Payment</div>` : (billHere ? `<div class="bill-flag">${billHere}</div>` : '');
+
+    let amtText;
+    if (day.net === 0) amtText = '—';
+    else if (day.net > 0) amtText = '+' + fmtShort(day.net);
+    else amtText = '−' + fmtShort(Math.abs(day.net));
+
+    cell.innerHTML = `
+      <div class="day-num">${day.d}</div>
+      ${day.net === 0 ? '' : `<div class="tags">${tagsHtml}</div>`}
+      ${flag}
+      <div class="day-amt">${amtText}</div>
+      <div class="day-bal">bal ${fmt(day.balance)}</div>
+    `;
+    if (day.net !== 0) cell.onclick = () => openModal(day);
+    grid.appendChild(cell);
+  });
+
+  /* ---- Weekly net strip ---- */
+  const weekRanges = [
+    {label:'Week 1', start:1, end:6},
+    {label:'Week 2', start:7, end:13},
+    {label:'Week 3', start:14, end:20},
+    {label:'Week 4', start:21, end:27},
+    {label:'Week 5', start:28, end:30},
+  ];
+  const weeksEl = document.getElementById('weeks');
+  weekRanges.forEach(w => {
+    const net = days.filter(d => d.d >= w.start && d.d <= w.end).reduce((s,d)=>s+d.net,0);
+    const c = document.createElement('div');
+    c.className = 'week-card';
+    const cls = net >= 0 ? 'pos' : 'neg';
+    const txt = (net >= 0 ? '+' : '−') + fmt(Math.abs(net));
+    c.innerHTML = `<div class="week-label">${w.label} · Jun ${w.start}–${w.end}</div><div class="week-val ${cls}">${txt}</div>`;
+    weeksEl.appendChild(c);
+  });
+
+  /* ---- Sparkline ---- */
+  (function(){
+    const W = 1000, H = 90, padTop = 12, padBot = 16;
+    const balances = [STARTING, ...days.map(d => d.balance)]; // 31 points (start + 30 days)
+    const min = Math.min(...balances), max = Math.max(...balances);
+    const range = max - min || 1;
+    const n = balances.length;
+    const x = i => (i / (n - 1)) * W;
+    const y = v => padTop + (1 - (v - min) / range) * (H - padTop - padBot);
+    let path = '', area = `M 0 ${H} `;
+    balances.forEach((v, i) => {
+      const px = x(i), py = y(v);
+      path += (i === 0 ? `M ${px} ${py}` : ` L ${px} ${py}`);
+      area += `L ${px} ${py} `;
+    });
+    area += `L ${W} ${H} Z`;
+    // income marker at day 17 -> index 17 in balances (start is index 0, day d is index d)
+    const incomeIdx = 17;
+    const lowIdx = balances.indexOf(min);
+    const svg = document.getElementById('spark');
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(255,194,51,0.28)"/>
+          <stop offset="100%" stop-color="rgba(255,194,51,0)"/>
+        </linearGradient>
+      </defs>
+      <path d="${area}" fill="url(#g)"/>
+      <path d="${path}" fill="none" stroke="#ffc233" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+      <circle cx="${x(lowIdx)}" cy="${y(balances[lowIdx])}" r="4" fill="#ff6b9d"/>
+      <circle cx="${x(incomeIdx)}" cy="${y(balances[incomeIdx])}" r="4" fill="#34d399"/>
+    `;
+  })();
+
+  /* ---- Modal ---- */
+  const WEEKDAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  function openModal(day){
+    document.getElementById('mDate').textContent = `${WEEKDAY_NAMES[day.dow]}, June ${day.d}`;
+    const mTotal = document.getElementById('mTotal');
+    if (day.net > 0){ mTotal.textContent = '+' + fmt(day.net); mTotal.className = 'modal-total in'; }
+    else if (day.net < 0){ mTotal.textContent = '−' + fmt(Math.abs(day.net)); mTotal.className = 'modal-total out'; }
+    else { mTotal.textContent = fmt(0); mTotal.className = 'modal-total flat'; }
+    document.getElementById('mBal').innerHTML = `Balance after this day · <b>${fmt(day.balance)}</b>`;
+    const allItems = [...day.inItems.map(i=>({...i, sign:'+'})), ...day.outItems.map(i=>({...i, sign:'−'}))];
+    document.getElementById('mRows').innerHTML = allItems.map(it => `
+      <div class="modal-row">
+        <div class="ml"><span class="tag ${it.type}" style="background:${COLORS[it.type]}"></span>${it.label}</div>
+        <div class="ma" style="color:${COLORS[it.type]}">${it.sign}${fmt(it.amt)}</div>
+      </div>`).join('');
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+  document.getElementById('modal').addEventListener('click', closeModal);
+</script>
+</body>
+</html>
